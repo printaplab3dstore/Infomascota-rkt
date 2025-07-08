@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa - Chapitas con QR para Mascotas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .intro {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .intro p {
+            font-size: 1.1rem;
+            color: #555;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 500;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .voice-quote {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.3);
+        }
+
+        .voice-quote::before {
+            content: "🎙️ ";
+            font-size: 1.2rem;
+        }
+
+        .step-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .step-list ol {
+            margin-left: 20px;
+        }
+
+        .step-list li {
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .step-list li:last-child {
+            border-bottom: none;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .spec-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .price-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        .price-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .price-box .price {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .step-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .specs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 <span class="highlight">GUION COMPLETO</span></h1>
+            <p class="subtitle">Chapitas con QR para Mascotas (impresión 3D + web funcional)</p>
+            <p><strong>💡 Ideal para YouTube + Reels + TikTok dividido por partes</strong></p>
+        </div>
+
+        <div class="intro">
+            <h2>🎣 Gancho de Inicio [0:00 a 0:15]</h2>
+            <div class="voice-quote">
+                "¿Tenés una impresora 3D y querés vender algo útil, original y que se venda solo? Te muestro cómo hacer chapitas con QR funcional para mascotas, desde el diseño hasta el link personalizado que nunca caduca. ¡Perfecto para emprender en serio!"
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Crear una página web funcional (gratis y permanente)</h2>
+            </div>
+            
+            <div class="voice-quote">
+                "Primero vamos a crear una ficha online con los datos de la mascota. Esa va a ser la página a la que lleva el QR. Te dejo el archivo HTML base en la descripción para que solo cambies los datos."
+            </div>
+
+            <div class="step-list">
+                <h3>🔹 Pasos para crear el repositorio:</h3>
+                <ol>
+                    <li>Entrá a <strong>https://github.com</strong></li>
+                    <li>Creá una cuenta gratuita (si no tenés)</li>
+                    <li>Clic en 'New repository'</li>
+                    <li>Poné un nombre, por ejemplo: <code>infomascota-nombre</code></li>
+                    <li>Activá la opción "Add a README file"</li>
+                    <li>Clic en Create repository</li>
+                </ol>
+            </div>
+
+            <div class="step-list">
+                <h3>🔹 Crear el archivo HTML:</h3>
+                <ol>
+                    <li>Dentro del repo, clic en 'Add file' > 'Create new file'</li>
+                    <li>Escribí como nombre: <code>index.html</code></li>
+                    <li>Pegá este código que te dejo en la descripción:</li>
+                </ol>
+            </div>
+
+            <div class="code-block">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Nombre de la Mascota&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="font-family: sans-serif; padding: 20px;"&gt;
+  &lt;h1&gt;🐶 Nombre de la Mascota&lt;/h1&gt;
+  &lt;p&gt;&lt;strong&gt;Dueño:&lt;/strong&gt; [Nombre del dueño]&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;Teléfono:&lt;/strong&gt; [Número de contacto]&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;Dirección:&lt;/strong&gt; [Ubicación o barrio]&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;Observaciones:&lt;/strong&gt; [Ej: tiene chip, es amigable, necesita medicación, etc.]&lt;/p&gt;
+  &lt;img src="[URL de una foto de la mascota]" alt="Foto de la mascota" width="200"&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+
+            <div class="voice-quote">
+                "Cambiás los datos entre corchetes por los de tu cliente. Y listo, ya tenés tu ficha online personalizada."
+            </div>
+
+            <div class="highlight-box">
+                <h3>🌐 Activar GitHub Pages</h3>
+                <ol>
+                    <li>Ir a la pestaña Settings > Pages</li>
+                    <li>En "Source", seleccioná:
+                        <ul>
+                            <li>Branch: main</li>
+                            <li>Folder: / (root)</li>
+                        </ul>
+                    </li>
+                    <li>Guardá</li>
+                </ol>
+                <p><strong>⏳ GitHub te va a dar un link como:</strong><br>
+                <code>https://tuusuario.github.io/infomascota-nombre</code></p>
+            </div>
+
+            <div class="voice-quote">
+                "Ese es el link que vamos a convertir en un código QR. Es gratis, nunca vence y se ve profesional."
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">Crear el código QR</h2>
+            </div>
+
+            <div class="step-list">
+                <ol>
+                    <li>Entrá a <strong>https://qr-code-monkey.com</strong></li>
+                    <li>Pegá el link que generaste</li>
+                    <li>Hacé clic en "Create QR Code"</li>
+                    <li>Descargalo como PNG en alta calidad</li>
+                </ol>
+            </div>
+
+            <div class="voice-quote">
+                "Ahora lo vamos a convertir en SVG para usarlo en el diseño 3D."
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">Convertir el QR a SVG en Inkscape</h2>
+            </div>
+
+            <div class="voice-quote">
+                "Usamos Inkscape, que es gratuito, para transformar el QR en un archivo vectorial y colocarlo en nuestra chapita."
+            </div>
+
+            <div class="step-list">
+                <h3>🔹 Pasos:</h3>
+                <ol>
+                    <li>Abrí Inkscape</li>
+                    <li>Arrastrá el PNG del QR</li>
+                    <li>Seleccionalo</li>
+                    <li>Menú superior: 'Ruta > Trazar mapa de bits…'</li>
+                    <li>Usá umbral de brillo automático</li>
+                    <li>Clic en Aceptar</li>
+                    <li>Eliminá el PNG original</li>
+                    <li>Guardá el archivo como .SVG</li>
+                </ol>
+            </div>
+
+            <div class="voice-quote">
+                "Ese archivo SVG lo insertamos ahora en el diseño 3D."
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">Diseñar la chapita en 3D</h2>
+            </div>
+
+            <div class="voice-quote">
+                "Vamos al diseño. Podés usar Tinkercad, Fusion o el programa que uses siempre. Estas son las claves:"
+            </div>
+
+            <div class="specs">
+                <div class="spec-item">
+                    <strong>✔ Forma:</strong> redonda, huesito, corazón, etc.
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Texto:</strong> en relieve con el nombre de la mascota
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Área plana:</strong> para el QR
+                </div>
+                <div class="spec-item">
+                    <strong>✔ QR SVG:</strong> como relieve negativo
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Agujero:</strong> de 3–5 mm para el collar
+                </div>
+            </div>
+
+            <div class="voice-quote">
+                "Probá que el QR se escanee bien antes de imprimir."
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2 class="step-title">Preparar e imprimir en 3D</h2>
+            </div>
+
+            <div class="specs">
+                <div class="spec-item">
+                    <strong>✔ Altura de capa:</strong> 0.2 mm
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Relleno:</strong> 5% (giroide o líneas)
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Material:</strong> PLA o PETG
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Soportes:</strong> solo si hay partes flotantes
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Pintado:</strong> del QR si es necesario
+                </div>
+            </div>
+
+            <div class="voice-quote">
+                "Podés cambiar de color para destacar el QR si tu impresora lo permite, o usar marcador negro después."
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <h2 class="step-title">Escanear y probar</h2>
+            </div>
+
+            <div class="voice-quote">
+                "Escaneá el QR con cualquier celular. Si todo salió bien, abre la ficha con la info de la mascota. ¡Y listo!"
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>🎥 Visual:</strong> Escaneo en vivo</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">7</div>
+                <h2 class="step-title">Vender y empaquetar</h2>
+            </div>
+
+            <div class="voice-quote">
+                "Este producto se vende muy fácil. Acá van ideas para destacarte:"
+            </div>
+
+            <div class="specs">
+                <div class="spec-item">
+                    <strong>✔ Packaging:</strong> Entregalo con bolsita y tarjetita
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Instrucciones:</strong> Incluí mini código QR de muestra
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Diseños únicos:</strong> Ofrecé colores o formas únicas
+                </div>
+                <div class="spec-item">
+                    <strong>✔ Combos:</strong> chapita + diseño + web
+                </div>
+            </div>
+
+            <div class="price-box">
+                <h3>💰 Precio sugerido</h3>
+                <div class="price">$1500 a $3500</div>
+                <p>por unidad, según nivel de personalización</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h2>🧠 Cierre</h2>
+            <div class="voice-quote">
+                "Con este tutorial podés ofrecer un producto útil, profesional y rentable con tu impresora 3D. Si querés más ideas como esta para vender, seguime y activá la campanita. ¡Nos vemos en el próximo proyecto!"
+            </div>
+        </div>
+    </div>
+</body>
+</html>
