@@ -3,88 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Printaplab 3D Store</title>
+<title>Printaplab 3D</title>
 
 <style>
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#111;
-    color:white;
-    text-align:center;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+    text-align: center;
 }
 
-/* Controles de música */
-.music-controls{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#222;
-    padding:15px;
-    border-radius:12px;
-    box-shadow:0 0 15px rgba(0,0,0,0.6);
-    z-index:9999;
+header {
+    padding: 40px 20px;
 }
 
-.music-controls button{
-    background:#ff6600;
-    border:none;
-    padding:8px 12px;
-    color:white;
-    cursor:pointer;
-    border-radius:6px;
-    margin-bottom:8px;
+h1 {
+    font-size: 2.5em;
 }
 
-.music-controls input{
-    width:100%;
+section {
+    padding: 40px 20px;
+}
+
+/* 🎵 Panel música */
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #111;
+    padding: 12px 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.music-player button {
+    background: #00ff88;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.music-player input[type="range"] {
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Printaplab 3D Store</h1>
-<p>Modelado 3D profesional • Herramientas FDM • Bots de ayuda • Calculadora de costos</p>
+<header>
+    <h1>Printaplab 3D Store</h1>
+    <p>Modelado 3D • Herramientas FDM • Automatización</p>
+</header>
 
-<!-- AUDIO -->
-<audio id="miMusica" src="mi-musica-final.mp3"></audio>
+<section>
+    <h2>Herramientas Gratuitas</h2>
+    <p>Calculadora de Costos FDM</p>
+    <p>Bot de ayuda</p>
+    <p>Generador de moldes STL</p>
+</section>
 
-<!-- CONTROLES -->
-<div class="music-controls">
-    <button id="muteBtn">🔊 Mute</button><br>
-    Volumen
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+<!-- 🎵 Música -->
+<div class="music-player">
+    <button onclick="toggleMusic()">🔊 On/Off</button>
+    <input type="range" min="0" max="1" step="0.01" value="0.4" onchange="setVolume(this.value)">
 </div>
 
+<audio id="bgMusic">
+    <source src="mi-musica-final.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-const audio = document.getElementById("miMusica");
-const muteBtn = document.getElementById("muteBtn");
-const volumeControl = document.getElementById("volumeControl");
+const music = document.getElementById("bgMusic");
 
-let started = false;
+document.addEventListener("click", function initMusic() {
+    music.currentTime = 3;
+    music.volume = 0.4;
+    music.play();
+    document.removeEventListener("click", initMusic);
+});
 
-// Espera interacción + 3 segundos
-document.body.addEventListener("click", function(){
-    if(!started){
-        started = true;
-        setTimeout(()=>{
-            audio.volume = 0.5;
-            audio.play();
-        },3000);
+function toggleMusic() {
+    if (music.paused) {
+        music.play();
+    } else {
+        music.pause();
     }
-});
+}
 
-// Control volumen
-volumeControl.addEventListener("input", function(){
-    audio.volume = this.value;
-});
-
-// Botón mute
-muteBtn.addEventListener("click", function(){
-    audio.muted = !audio.muted;
-    muteBtn.textContent = audio.muted ? "🔇 Unmute" : "🔊 Mute";
-});
+function setVolume(value) {
+    music.volume = value;
+}
 </script>
 
 </body>
