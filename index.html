@@ -1,166 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Generador de Moldes STL</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Printaplab 3D Store</title>
 
-    h1 {
-      color: #38bdf8;
-    }
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#111;
+    color:white;
+    text-align:center;
+}
 
-    .container {
-      background-color: #1e293b;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    }
+/* Controles de música */
+.music-controls{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#222;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 0 15px rgba(0,0,0,0.6);
+    z-index:9999;
+}
 
-    input {
-      padding: 8px;
-      margin: 10px 0;
-      width: 80%;
-      border-radius: 5px;
-      border: none;
-    }
+.music-controls button{
+    background:#ff6600;
+    border:none;
+    padding:8px 12px;
+    color:white;
+    cursor:pointer;
+    border-radius:6px;
+    margin-bottom:8px;
+}
 
-    button {
-      padding: 10px 20px;
-      background-color: #38bdf8;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #0ea5e9;
-    }
-
-    .result {
-      margin-top: 15px;
-      font-size: 18px;
-    }
-
-    /* 🎵 Music Player */
-    #music-player {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.85);
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #muteBtn {
-      padding: 6px 10px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    #volumeControl {
-      width: 100px;
-    }
-
-  </style>
+.music-controls input{
+    width:100%;
+}
+</style>
 </head>
+
 <body>
 
-  <h1>Generador de Moldes STL</h1>
+<h1>Printaplab 3D Store</h1>
+<p>Modelado 3D profesional • Herramientas FDM • Bots de ayuda • Calculadora de costos</p>
 
-  <div class="container">
-    <p>Ingresá el diámetro del molde (mm):</p>
-    <input type="number" id="diametro" placeholder="Ej: 50">
-    <br>
-    <button onclick="calcular()">Calcular</button>
+<!-- AUDIO -->
+<audio id="miMusica" src="mi-musica-final.mp3"></audio>
 
-    <div class="result" id="resultado"></div>
-  </div>
+<!-- CONTROLES -->
+<div class="music-controls">
+    <button id="muteBtn">🔊 Mute</button><br>
+    Volumen
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+</div>
 
-  <!-- 🎵 Reproductor personalizado -->
-  <div id="music-player">
-    <button id="muteBtn">🔊</button>
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.4">
-  </div>
+<script>
+const audio = document.getElementById("miMusica");
+const muteBtn = document.getElementById("muteBtn");
+const volumeControl = document.getElementById("volumeControl");
 
-  <audio id="bgMusic" src="mi-musica-final.mp3"></audio>
+let started = false;
 
-  <script>
-    function calcular() {
-      const diametro = document.getElementById("diametro").value;
-      if (!diametro) {
-        document.getElementById("resultado").innerText = "Ingresá un valor válido.";
-        return;
-      }
-
-      const radio = diametro / 2;
-      const area = Math.PI * radio * radio;
-      document.getElementById("resultado").innerText =
-        "Área aproximada: " + area.toFixed(2) + " mm²";
-    }
-
-    const music = document.getElementById("bgMusic");
-    const volumeControl = document.getElementById("volumeControl");
-    const muteBtn = document.getElementById("muteBtn");
-
-    music.volume = 0.4;
-
-    let started = false;
-
-    document.addEventListener("click", function startMusicOnce() {
-      if (!started) {
+// Espera interacción + 3 segundos
+document.body.addEventListener("click", function(){
+    if(!started){
         started = true;
-        setTimeout(() => {
-          music.play();
-          fadeIn();
-        }, 3000);
-      }
-    }, { once: true });
-
-    function fadeIn() {
-      music.volume = 0;
-      let vol = 0;
-      const interval = setInterval(() => {
-        if (vol < 0.4) {
-          vol += 0.02;
-          music.volume = vol;
-        } else {
-          clearInterval(interval);
-        }
-      }, 100);
+        setTimeout(()=>{
+            audio.volume = 0.5;
+            audio.play();
+        },3000);
     }
+});
 
-    volumeControl.addEventListener("input", function() {
-      music.volume = this.value;
-    });
+// Control volumen
+volumeControl.addEventListener("input", function(){
+    audio.volume = this.value;
+});
 
-    muteBtn.addEventListener("click", function() {
-      if (music.muted) {
-        music.muted = false;
-        muteBtn.textContent = "🔊";
-      } else {
-        music.muted = true;
-        muteBtn.textContent = "🔇";
-      }
-    });
-
-  </script>
+// Botón mute
+muteBtn.addEventListener("click", function(){
+    audio.muted = !audio.muted;
+    muteBtn.textContent = audio.muted ? "🔇 Unmute" : "🔊 Mute";
+});
+</script>
 
 </body>
 </html>
