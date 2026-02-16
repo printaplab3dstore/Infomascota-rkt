@@ -1,107 +1,918 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Printaplab 3D</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI FDM MASTER SYSTEM | Curso Interactivo</title>
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1f2937;
+            --bg-card: #162032;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #06b6d4;
+            --accent-hover: #22d3ee;
+            --accent-glow: rgba(6, 182, 212, 0.15);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #2d3a4f;
+            --gradient-accent: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #0f0f0f;
-    color: white;
-    text-align: center;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-header {
-    padding: 40px 20px;
-}
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
 
-h1 {
-    font-size: 2.5em;
-}
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
 
-section {
-    padding: 40px 20px;
-}
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
 
-/* 🎵 Panel música */
-.music-player {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #111;
-    padding: 12px 15px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.6);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+        }
 
-.music-player button {
-    background: #00ff88;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
 
-.music-player input[type="range"] {
-    cursor: pointer;
-}
-</style>
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-section {
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-glow);
+            color: var(--accent);
+        }
+
+        .nav-item.active {
+            background: var(--accent-glow);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        /* Header */
+        .content-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Modules */
+        .module {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .module:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .module-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            transition: background 0.2s ease;
+        }
+
+        .module-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .module-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .module-number {
+            background: var(--gradient-accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .module-arrow {
+            color: var(--accent);
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .module.open .module-arrow {
+            transform: rotate(180deg);
+        }
+
+        .module-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            border-top: 1px solid transparent;
+        }
+
+        .module.open .module-content {
+            max-height: 2000px;
+            border-top-color: var(--border);
+        }
+
+        .module-inner {
+            padding: 1.5rem;
+        }
+
+        /* Content Styling */
+        .module-inner p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .module-inner h3 {
+            color: var(--accent);
+            font-size: 1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .module-inner h4 {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin: 1.25rem 0 0.5rem;
+            font-weight: 600;
+        }
+
+        .module-inner ul, .module-inner ol {
+            color: var(--text-secondary);
+            margin: 0.75rem 0 1rem 1.5rem;
+        }
+
+        .module-inner li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tech Box */
+        .tech-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tech-box-title {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-box p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--accent);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .winner-cell {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--success);
+        }
+
+        .winner-badge {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        /* Checklist */
+        .checklist {
+            margin: 1rem 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--border);
+        }
+
+        .checklist-item.checked {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .checkmark {
+            color: white;
+            font-size: 14px;
+            display: none;
+        }
+
+        .checklist-item.checked .checkmark {
+            display: block;
+        }
+
+        .checklist-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item.checked .checklist-text {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        /* Keywords */
+        .keyword-tag {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            margin: 0.2rem;
+            border: 1px solid var(--border);
+        }
+
+        .keyword-tag.positive {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        .keyword-tag.negative {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 200;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .module-inner {
+                padding: 1rem;
+            }
+
+            .comparison-table {
+                font-size: 0.8rem;
+            }
+
+            .comparison-table th, 
+            .comparison-table td {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .module {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .module:nth-child(1) { animation-delay: 0.1s; }
+        .module:nth-child(2) { animation-delay: 0.15s; }
+        .module:nth-child(3) { animation-delay: 0.2s; }
+        .module:nth-child(4) { animation-delay: 0.25s; }
+        .module:nth-child(5) { animation-delay: 0.3s; }
+    </style>
 </head>
-
 <body>
+    <div class="app-container">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">
+            ☰
+        </button>
 
-<header>
-    <h1>Printaplab 3D Store</h1>
-    <p>Modelado 3D • Herramientas FDM • Automatización</p>
-</header>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">AI FDM</div>
+                <div class="logo-subtitle">Master System</div>
+            </div>
 
-<section>
-    <h2>Herramientas Gratuitas</h2>
-    <p>Calculadora de Costos FDM</p>
-    <p>Bot de ayuda</p>
-    <p>Generador de moldes STL</p>
-</section>
+            <div class="nav-section">
+                <div class="nav-section-title">Contenido del Curso</div>
+                <div class="nav-item active" onclick="showSection('intro')">
+                    <span class="nav-icon">▶</span>
+                    Introducción
+                </div>
+                <div class="nav-item" onclick="showSection('fundamentos')">
+                    <span class="nav-icon">◉</span>
+                    Fundamentos FDM
+                </div>
+                <div class="nav-item" onclick="showSection('comparativa')">
+                    <span class="nav-icon">◉</span>
+                    Comparativa IA
+                </div>
+                <div class="nav-item" onclick="showSection('preparacion')">
+                    <span class="nav-icon">◉</span>
+                    Preparación Imagen
+                </div>
+                <div class="nav-item" onclick="showSection('limpieza')">
+                    <span class="nav-icon">◉</span>
+                    Limpieza Modelo
+                </div>
+                <div class="nav-item" onclick="showSection('parametros')">
+                    <span class="nav-icon">◉</span>
+                    Parámetros FDM
+                </div>
+                <div class="nav-item" onclick="showSection('soportes')">
+                    <span class="nav-icon">◉</span>
+                    Diseño Sin Soportes
+                </div>
+                <div class="nav-item" onclick="showSection('checklist')">
+                    <span class="nav-icon">◉</span>
+                    Checklist Final
+                </div>
+                <div class="nav-item" onclick="showSection('monetizacion')">
+                    <span class="nav-icon">◉</span>
+                    Monetización
+                </div>
+            </div>
+        </nav>
 
-<!-- 🎵 Música -->
-<div class="music-player">
-    <button onclick="toggleMusic()">🔊 On/Off</button>
-    <input type="range" min="0" max="1" step="0.01" value="0.4" onchange="setVolume(this.value)">
-</div>
+        <main class="main-content">
+            <header class="content-header">
+                <span class="chapter-badge">Capítulo 1</span>
+                <h1>Fundamentos de Impresión FDM Aplicada a IA</h1>
+                <p class="subtitle">Comprende la física de la manufactura para generar modelos que realmente se impriman</p>
+            </header>
 
-<audio id="bgMusic">
-    <source src="mi-musica-final.mp3" type="audio/mpeg">
-</audio>
+            <!-- Módulo 1: Fundamentos -->
+            <div class="module open">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span class="module-number">01</span>
+                        La Física de la Deposición Fundida
+                    </div>
+                    <span class="module-arrow">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-inner">
+                        <p>La impresión FDM funciona mediante la extrusión controlada de filamento fundido a través de una boquilla calibrada que se mueve coordinadamente en tres ejes mientras deposita material capa por capa. Este proceso aparentemente simple impone restricciones físicas fundamentales que determinan qué geometrías son posibles y cuáles colapsarán, producirán defectos o serán simplemente imposibles de fabricar.</p>
+                        
+                        <div class="tech-box">
+                            <div class="tech-box-title">⚡ Restricción Crítica: La Gravedad</div>
+                            <p>Cada capa depositada debe soportar el peso de las capas superiores. Si una sección del modelo extiende horizontalmente más allá de la base de soporte suficiente, el plástico fundido pendulará antes de solidificarse, creando cadenas, drooping o colapsos completos.</p>
+                        </div>
 
-<script>
-const music = document.getElementById("bgMusic");
+                        <h3>Las Tres Restricciones Fundamentales</h3>
+                        
+                        <h4>1. Gravedad</h4>
+                        <p>La distancia horizontal máxima que puede recorrerse sin soporte depende de la temperatura del filamento, la velocidad de impresión y el ángulo de inclinación. En términos generales, cualquier voladizo que exceda los 45 a 60 grados desde la vertical requerirá estructuras de soporte.</p>
+                        
+                        <h4>2. Adhesión entre Capas</h4>
+                        <p>El filamento fundido se une al anterior mediante difusión molecular. Esta unión no es instantánea ni perfecta. Las capas delgadas y los modelos con superficies pequeñas tienen mayor probabilidad de deslaminación bajo estrés mecánico.</p>
+                        
+                        <h4>3. Adhesión a la Cama</h4>
+                        <p>El modelo completo debe permanecer adherido a la superficie de impresión durante toda la duración de la impresión. Una base inadecuada provocará warping, lifting o el modelo completo despegándose a mitad de impresión.</p>
+                    </div>
+                </div>
+            </div>
 
-document.addEventListener("click", function initMusic() {
-    music.currentTime = 3;
-    music.volume = 0.4;
-    music.play();
-    document.removeEventListener("click", initMusic);
-});
+            <!-- Módulo 2: Modelo Físico vs Visual -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span class="module-number">02</span>
+                        Modelo Físico versus Modelo Visual
+                    </div>
+                    <span class="module-arrow">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-inner">
+                        <p>En el ecosistema de gráficos 3D existen dos categorías fundamentales de modelos que responden a necesidades completamente diferentes, y la confusión entre ambas es la razón principal por la que los modelos generados por IA fallan en impresión FDM.</p>
+                        
+                        <div class="warning-box">
+                            <p><strong>El Error Común:</strong> Usar modelos diseñados para videojuegos o cinematografía en impresión 3D. Estas dos aplicaciones tienen requisitos completamente diferentes que la mayoría de creadores ignoran.</p>
+                        </div>
 
-function toggleMusic() {
-    if (music.paused) {
-        music.play();
-    } else {
-        music.pause();
-    }
-}
+                        <h3>Modelo Visual</h3>
+                        <p>Diseñado para existir en un entorno digital: videojuegos, cinematografía, realidad virtual, visualización arquitectónica. Para estos usos, lo que importa es la apariencia desde ángulos específicos, la presencia de texturas detalladas. La geometría puede ser abierta, contener caras invertidas, tener holes no atravesantes, o presentar partes flotantes que nunca serían físicamente posibles.</p>
 
-function setVolume(value) {
-    music.volume = value;
-}
-</script>
+                        <h3>Modelo Físico</h3>
+                        <p>Debe existir como objeto material en el espacio tridimensional real. Cada superficie debe cerrar un volumen, cada borde debe conectar con precisión, no pueden existir caras huecas o geometrías imposibles. El modelo físico debe ser manipulable, soportar su propio peso, resistir fuerzas externas.</p>
 
+                        <div class="tech-box">
+                            <div class="tech-box-title">🔑 Concepto Clave: Manifold</div>
+                            <p>Un modelo manifold es aquel donde cada arista conecta exactamente con dos caras y el volumen está completamente cerrado, como la superficie de un objeto sólido real. Los modelos non-manifold contienen geometrías que no podrían existir en un objeto físico.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 3: Comparativa IA -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span class="module-number">03</span>
+                        Comparativa Profesional de Herramientas IA
+                    </div>
+                    <span class="module-arrow">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-inner">
+                        <p>Las herramientas de IA generativa han evolucionado significativamente, pero cada una presenta características diferentes que las hacen más o menos adecuadas para el flujo de trabajo FDM.</p>
+
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Herramienta</th>
+                                    <th>Velocidad</th>
+                                    <th>Calidad FDM</th>
+                                    <th>Bases Planas</th>
+                                    <th>Idoneidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tripo AI</td>
+                                    <td>Alta</td>
+                                    <td>Media-Baja</td>
+                                    <td>Baja</td>
+                                    <td>Parcial</td>
+                                </tr>
+                                <tr>
+                                    <td>Meshy</td>
+                                    <td>Muy Alta</td>
+                                    <td>Baja</td>
+                                    <td>Baja</td>
+                                    <td>Baja</td>
+                                </tr>
+                                <tr>
+                                    <td>Luma AI</td>
+                                    <td>Media</td>
+                                    <td>Media</td>
+                                    <td>N/A</td>
+                                    <td>Limitada</td>
+                                </tr>
+                                <tr>
+                                    <td>Kaedim</td>
+                                    <td>Alta</td>
+                                    <td>Alta</td>
+                                    <td>Media</td>
+                                    <td>Alta</td>
+                                </tr>
+                                <tr class="winner-cell">
+                                    <td><strong>Hitem 3D</strong> <span class="winner-badge">Recomendado</span></td>
+                                    <td>Alta</td>
+                                    <td>Alta</td>
+                                    <td>Alta</td>
+                                    <td>Muy Alta</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="tech-box">
+                            <div class="tech-box-title">⭐ Por Qué Hitem 3D es la Mejor Opción</div>
+                            <p>A diferencia de los modelos difusos de otras IAs, Hitem 3D prioriza la generación de mallas con topología limpia y menor cantidad de artefactos flotantes. Su algoritmo parece "entender" mejor la continuidad de la superficie, lo que resulta en menos errores de "non-manifold edges" en Cura o PrusaSlicer. Es el único que genera bases consistentemente planas, crucial para la adhesión a la cama caliente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 4: Parámetros -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span class="module-number">04</span>
+                        Parámetros Técnicos Reales para FDM
+                    </div>
+                    <span class="module-arrow">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-inner">
+                        <h3>Grosor Mínimo de Pared</h3>
+                        <p>Para una boquilla estándar de 0.4mm, el grosor mínimo absoluto teórico es 0.4mm (un perímetro único). Sin embargo, este grosor es extremadamente frágil. El grosor mínimo recomendado es de <strong>1.2mm</strong> (tres perímetros) para paredes funcionales.</p>
+
+                        <h3>Ángulo Máximo de Voladizo</h3>
+                        <p>El ángulo máximo de voladizo sin soporte es aproximadamente <strong>45 grados</strong> con PLA y enfriamiento activo. Con materiales como ABS o Nylon, este ángulo se reduce significativamente.</p>
+
+                        <h3>Tolerancias de Encastre</h3>
+                        <p>Para encastres funcionales en FDM, las tolerancias típicas necesarias oscilan entre <strong>0.3mm y 0.5mm</strong> por superficie de contacto. Para un encastre cilíndrico, el hole debe ser 0.4mm a 0.6mm mayor que el pin.</p>
+
+                        <h3>Dimensiones Mínimas de Detalles</h3>
+                        <p>Con boquillas de 0.4mm, el detalle mínimo reproducible es aproximadamente <strong>0.5mm a 0.6mm</strong>. Detalles más pequeños no se formarán correctamente o se fusionarán en blobs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 5: Checklist -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span class="module-number">05</span>
+                        Checklist Profesional Antes de Exportar
+                    </div>
+                    <span class="module-arrow">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-inner">
+                        <p>Verifica cada uno de estos puntos antes de exportar tu modelo a STL:</p>
+                        
+                        <div class="checklist">
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Modelo es manifold (volumen completamente cerrado)</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Todas las normales apuntan hacia afuera</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Base 100% plana (Plane Cut aplicado)</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Paredes mínimas de 1.2mm verificadas</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Ángulos de voladizo menores a 50 grados</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Escala correcta verificada en milímetros</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Conteo de polígonos optimizado para FDM</span>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <div class="checkbox"><span class="checkmark">✓</span></div>
+                                <span class="checklist-text">Prueba de slice completada sin errores</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 6: Monetización -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span class="module-number">06</span>
+                        Sistema de Monetización
+                    </div>
+                    <span class="module-arrow">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-inner">
+                        <h3>Venta de Archivos STL Digitales</h3>
+                        <p>El modelo con mayor边际. Cada venta tiene costo marginal casi cero después del esfuerzo inicial. Plataformas: Cults3D, Printables, Etsy, Gumroad. Rango de precios: $3 a $15 por archivo.</p>
+
+                        <h3>Impresión Bajo Demanda</h3>
+                        <p>Transforma el modelo digital en producto físico enviado directamente al cliente. Puede implementarse mediante servicios como Shapeways o operación propia.</p>
+
+                        <h3>Servicios de Diseño Personalizado</h3>
+                        <p>Captura valor de clientes que desean algo único. Precios de $30 a $150 por proyecto para customizaciones, $200 a $500+ para diseños originales.</p>
+
+                        <h3>Licenciamiento</h3>
+                        <p>Licencia modelos para que otros impriman y vendan. Tarifas típicas de 10% a 30% de ventas del licensee o tarifas fijas por uso.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function toggleModule(header) {
+            header.parentElement.classList.toggle('open');
+        }
+
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function showSection(sectionId) {
+            // Actualizar navegación
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Cerrar sidebar en móvil
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        // Inicializar
+        document.querySelectorAll('.module-header').forEach(header => {
+            header.addEventListener('click', () => {
+                toggleModule(header);
+            });
+        });
+    </script>
 </body>
 </html>
