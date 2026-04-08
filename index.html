@@ -872,6 +872,14 @@
             color: var(--error);
         }
 
+        .toast.info {
+            border-color: var(--info);
+        }
+
+        .toast.info svg {
+            color: var(--info);
+        }
+
         .toast svg {
             width: 20px;
             height: 20px;
@@ -998,7 +1006,7 @@
                 </svg>
                 Todo el procesamiento se realiza localmente en tu navegador
             </div>
-            <input type="file" id="modelInput" class="hidden-input" accept=".stl,.obj" onchange="loadModel(event)">
+            <input type="file" id="modelInput" class="hidden-input" accept=".stl,.obj,.STL,.OBJ" onchange="loadModel(event)">
             <input type="file" id="textureInput" class="hidden-input" accept=".png,.jpg,.jpeg" onchange="loadCustomTexture(event)">
         </section>
 
@@ -1775,12 +1783,25 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            const extension = file.name.split('.').pop().toLowerCase();
+            if (extension !== 'stl' && extension !== 'obj') {
+                showToast('Formato no soportado. Usa STL o OBJ', 'error');
+                return;
+            }
+
+            showToast('Cargando modelo...', 'info');
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const contents = e.target.result;
-                parseSTL(contents);
-                document.getElementById('viewerPlaceholder').style.display = 'none';
-                showToast(translations[state.language].modelLoaded, 'success');
+                if (extension === 'stl') {
+                    parseSTL(contents);
+                } else if (extension === 'obj') {
+                    parseOBJ(contents);
+                }
+            };
+            reader.onerror = function() {
+                showToast('Error al leer el archivo', 'error');
             };
             reader.readAsArrayBuffer(file);
         }
@@ -1794,25 +1815,29 @@
 
         // Parse STL
         function parseSTL(data) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const buffer = e.target.result;
-                const isBinary = isBinarySTL(buffer);
-
+            try {
+                const isBinary = isBinarySTL(data);
                 let geometry;
+
                 if (isBinary) {
-                    geometry = parseBinarySTL(buffer);
+                    geometry = parseBinarySTL(data);
                 } else {
-                    const text = new TextDecoder().decode(buffer);
+                    const text = new TextDecoder().decode(data);
                     geometry = parseASCIISTL(text);
                 }
 
                 if (geometry) {
                     state.originalGeometry = geometry.clone();
                     createMesh(geometry);
+                    document.getElementById('viewerPlaceholder').style.display = 'none';
+                    showToast(translations[state.language].modelLoaded, 'success');
+                } else {
+                    showToast('Error: No se pudo leer el modelo', 'error');
                 }
-            };
-            reader.readAsArrayBuffer(data);
+            } catch (error) {
+                console.error('Error parsing STL:', error);
+                showToast('Error al cargar el modelo', 'error');
+            }
         }
 
         // Check if STL is binary
@@ -1861,6 +1886,35 @@
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
             geometry.computeVertexNormals();
             return geometry;
+        }
+
+        // Parse OBJ
+        function parseOBJ(data) {
+            const text = new TextDecoder().decode(data);
+            const vertices = [];
+            const lines = text.split('\n');
+
+            for (const line of lines) {
+                line = line.trim();
+                if (line.startsWith('v ')) {
+                    const parts = line.split(/\s+/);
+                    vertices.push(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+                }
+            }
+
+            if (vertices.length === 0) {
+                showToast('No se encontraron vértices en el archivo OBJ', 'error');
+                return null;
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            geometry.computeVertexNormals();
+
+            state.originalGeometry = geometry.clone();
+            createMesh(geometry);
+            document.getElementById('viewerPlaceholder').style.display = 'none';
+            showToast(translations[state.language].modelLoaded, 'success');
         }
 
         // Create mesh
@@ -2144,6 +2198,19 @@
             initThreeJS();
             updateTriangleCount();
             updateUI();
+
+            // Create default cube for immediate testing
+            setTimeout(() => {
+                createDefaultCube();
+            }, 500);
+        }
+
+        // Create default cube for testing
+        function createDefaultCube() {
+            const geometry = new THREE.BoxGeometry(2, 2, 2, 32, 32, 32);
+            state.originalGeometry = geometry.clone();
+            createMesh(geometry);
+            document.getElementById('viewerPlaceholder').style.display = 'none';
         }
 
         // Start
